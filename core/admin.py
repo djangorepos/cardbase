@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from core.models import Card, History
+from core.models import Card, Transaction
 
 admin.site.register(Card)
-admin.site.register(History)
+admin.site.register(Transaction)

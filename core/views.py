@@ -1,18 +1,16 @@
 from django.db.models import Q
-from django.views.generic import ListView, FormView
+from django.views.generic import ListView, FormView, DetailView
 
 from core.forms import FilterForm
-from core.models import Card
+from core.models import Card, Transaction
 
 
 class CardList(ListView, FormView):
     model = Card
     form_class = FilterForm
     template_name = 'card_list.html'
-    paginate_by = 10
 
     def get_queryset(self):
-        print(self.request.GET)
         blank = False
         for obj in self.request.GET.values():
             print(obj)
@@ -20,7 +18,7 @@ class CardList(ListView, FormView):
                 pass
             else:
                 blank = True
-        print(blank)
+
         series = self.request.GET.get('series')
         number = self.request.GET.get('number')
         cardholder_name = self.request.GET.get('cardholder_name')
@@ -38,5 +36,13 @@ class CardList(ListView, FormView):
         return object_list.order_by('release_date')
 
 
-def card_detail(request, pk):
-    pass
+class CardDetail(DetailView):
+    model = Card
+    template_name = 'card_detail.html'
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        context = self.get_context_data(object=self.object)
+        context['transactions'] = Transaction.objects.filter(card=self.object)
+        return self.render_to_response(context)
+

@@ -21,7 +21,14 @@ class Card(models.Model):
         return self.number
 
 
-class History(models.Model):
+class Transaction(models.Model):
     card = models.ForeignKey(Card, on_delete=models.CASCADE)
     title = models.CharField(max_length=128)
-    price = models.FloatField
+    date = models.DateTimeField()
+    price = models.FloatField()
+
+    def __str__(self):
+        return self.card.number
+
+    class Meta:
+        ordering = ('date',)
