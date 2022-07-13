@@ -1,0 +1,11 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+.idea/
+.env
+.docker.env
+__pycache__/
+media/
+**/venv/
+/.pytest_cache/
+db.sqlite3

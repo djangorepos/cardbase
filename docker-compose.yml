@@ -1,0 +1,32 @@
+version: '3'
+services:
+  web:
+    build: .
+    command: gunicorn car_shop.wsgi:application --bind 0.0.0.0:8000
+    expose:
+      - "8000"
+    volumes:
+      - .:/code
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:latest
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+      - TZ=Europe/Kiev
+
+  nginx:
+    build: ./nginx
+    volumes:
+      - .:/code
+    ports:
+      - "80:80"
+    depends_on:
+      - web
