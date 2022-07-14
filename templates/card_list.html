@@ -34,7 +34,7 @@
                               <a class="btn btn-sm btn-outline-secondary"
                                   {% if card.status == 'not_active' %} href="{% url 'card_activate' card.id %}">Activate
                                   {% elif card.status == 'active' %} href="{% url 'card_deactivate' card.id %}">Deactivate
-                                  {% else %} href="">Get new
+                                  {% else %} href="{% url 'card_create' %}">Get new
                                   {% endif %}
                               <a class="btn btn-sm btn-outline-secondary" href="{% url 'card_delete' card.id %}">Delete</a>
                               </a>
