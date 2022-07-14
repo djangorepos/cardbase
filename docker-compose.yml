@@ -2,7 +2,7 @@ version: '3'
 services:
   web:
     build: .
-    command: gunicorn car_shop.wsgi:application --bind 0.0.0.0:8000
+    command: gunicorn cardbase.wsgi:application --bind 0.0.0.0:8000
     expose:
       - "8000"
     volumes:
