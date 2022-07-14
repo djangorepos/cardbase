@@ -21,9 +21,11 @@
                     <img src="{{ card.image.url }}" alt="Card">
                     <div class="card-body">
                         <p class="card-text">Card series: {{ card.series }}</p>
-                        <p class="card-text">Card number: {{ card.number }}</p>
-                        <p class="card-text">Valid to: {{ card.valid_date.month }}/{{ card.valid_date.year }}</p>
-                        <p class="card-text">Cardholder name: {{ card.cardholder_name }}</p>
+                        <p class="card-text">Card number:</p>
+                        <p>{{ card.number }}</p>
+                        <p class="card-text">Valid to: {{ card.valid_date|date:'m' }}/{{ card.valid_date|date:'y' }}</p>
+                        <p class="card-text">Cardholder name:</p>
+                        <p>{{ card.cardholder_name }}</p>
                         <p class="card-text">Status: {{ card.status }}</p>
                         <p class="card-text">Balance: $ {{ card.balance }}</p>
                         <div class="d-flex justify-content-between align-items-center">

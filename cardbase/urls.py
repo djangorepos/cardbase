@@ -18,11 +18,12 @@ from django.contrib import admin
 from django.urls import path
 
 from cardbase import settings
-from core.views import CardList, CardDetail
+from core.views import *
 
 urlpatterns = [
     path('', CardList.as_view(), name='card_list'),
     path('card/<int:pk>', CardDetail.as_view(), name='card_detail'),
+    path('card/create', card_create, name='card_create'),
     path('admin/', admin.site.urls),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

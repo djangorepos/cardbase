@@ -12,7 +12,7 @@
                     <div class="card-body">
                         <p class="card-text">Card series: {{ card.series }}</p>
                         <p class="card-text">Card number: {{ card.number }}</p>
-                        <p class="card-text">Valid to: {{ card.valid_date.month }}/{{ card.valid_date.year }}</p>
+                        <p class="card-text">Valid to: {{ card.valid_date|date:'m' }}/{{ card.valid_date|date:'y' }}</p>
                         <p class="card-text">Cardholder name: {{ card.cardholder_name }}</p>
                         <p class="card-text">Status: {{ card.status }}</p>
                         <p class="card-text">Balance: $ {{ card.balance }}</p>

@@ -101,7 +101,10 @@
 <footer class="text-muted py-5">
   <div class="container">
     <p class="float-end mb-1">
-      <a href="#" class="btn btn-sm btn-primary">Create New Card</a>
+      {% if create  %}
+      {% else %}
+      <a href="{% url 'card_create' %}" class="btn btn-sm btn-primary">Create New Card</a>
+      {% endif %}
       <a href="#" class="btn btn-sm btn-outline-secondary">Back to top</a>
     </p>
   </div>
