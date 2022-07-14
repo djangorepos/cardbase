@@ -23,7 +23,7 @@ SECRET_KEY = 'django-insecure-au*_z=os1i$_0y6!8&q#%yt6*p(odaukkmhr#ys!jn4gp6raja
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['54.146.192.75']
 
 # Application definition
 
@@ -73,8 +73,6 @@ WSGI_APPLICATION = 'cardbase.wsgi.application'
 try:
     from cardbase.settings_local import *
 except ImportError as error:
-    DEBUG = False
-    ALLOWED_HOSTS = ['54.146.192.75']
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
