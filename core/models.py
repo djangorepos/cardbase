@@ -20,6 +20,9 @@ class Card(models.Model):
     def __str__(self):
         return self.number
 
+    class Meta:
+        ordering = ('release_date',)
+
 
 class Transaction(models.Model):
     card = models.ForeignKey(Card, on_delete=models.CASCADE)
