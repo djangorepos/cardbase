@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from django.core.exceptions import ValidationError
 from django.core.files.images import ImageFile
 from django.db.models import Q
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.views.generic import ListView, FormView, DetailView
 import random
@@ -134,3 +134,22 @@ def card_create(request):
     context['form'] = form
     context['create'] = True
     return render(request, 'card_create.html', context)
+
+
+def card_activate(request, pk):
+    card = Card.objects.get(id=pk)
+    card.status = 'active'
+    card.save()
+    return redirect('card_list')
+
+
+def card_deactivate(request, pk):
+    card = Card.objects.get(id=pk)
+    card.status = 'not_active'
+    card.save()
+    return redirect('card_list')
+
+
+def card_delete(request, pk):
+    card = Card.objects.get(id=pk).delete()
+    return redirect('card_list')

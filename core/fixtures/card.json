@@ -1,0 +1,30 @@
+[
+  {
+    "model": "core.card",
+    "pk": 1,
+    "fields": {
+      "image": "core/staticfiles/img/visa_default.png",
+      "series": "visa",
+      "number": "4872 5875 9835 1164",
+      "cardholder_name": "John Smith",
+      "release_date": "2022-07-14T13:20:30+03:00",
+      "valid_date": "2023-07-14T13:20:30+03:00",
+      "status": "active",
+      "balance": "1000"
+    }
+  },
+  {
+    "model": "core.card",
+    "pk": 2,
+    "fields": {
+      "image": "core/staticfiles/img/mastercard_default.png",
+      "series": "mastercard",
+      "number": "4318 9228 6867 1730",
+      "cardholder_name": "John Smith",
+      "release_date": "2022-07-14T13:20:30+03:00",
+      "valid_date": "2024-07-14T13:20:30+03:00",
+      "status": "active",
+      "balance": "2000"
+    }
+  }
+]

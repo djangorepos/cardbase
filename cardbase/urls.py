@@ -24,6 +24,10 @@ urlpatterns = [
     path('', CardList.as_view(), name='card_list'),
     path('card/<int:pk>', CardDetail.as_view(), name='card_detail'),
     path('card/create', card_create, name='card_create'),
+    path('card/activate/<int:pk>', card_activate, name='card_activate'),
+    path('card/deactivate/<int:pk>', card_deactivate, name='card_deactivate'),
+    path('card/delete/<int:pk>', card_delete, name='card_delete'),
+
     path('admin/', admin.site.urls),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

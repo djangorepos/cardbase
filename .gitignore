@@ -5,7 +5,7 @@
 .env
 .docker.env
 __pycache__/
-media/
 **/venv/
 /.pytest_cache/
 db.sqlite3
+cardbase/settings_local.py
