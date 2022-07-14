@@ -16,27 +16,30 @@ class CardList(ListView, FormView):
     template_name = 'card_list.html'
 
     def get_queryset(self):
-        blank = False
+        blank = 0
         for obj in self.request.GET.values():
             print(obj)
             if obj is None or obj == '':
-                pass
-            else:
-                blank = True
+                blank += 1
 
         series = self.request.GET.get('series')
         number = self.request.GET.get('number')
         cardholder_name = self.request.GET.get('cardholder_name')
         status = self.request.GET.get('status')
+        print(blank)
 
-        if blank is False:
+        if blank == 4:
             object_list = Card.objects.all()
         else:
-            object_list = Card.objects.filter(Q(series=series)
-                                              | Q(number=number)
-                                              | Q(cardholder_name=cardholder_name)
-                                              | Q(status=status)
-                                              )
+            object_list = Card.objects.all()
+            if series and series != '':
+                object_list = object_list.filter(series=series)
+            if number and number != '':
+                object_list = object_list.filter(number=number)
+            if cardholder_name and cardholder_name != '':
+                object_list = object_list.filter(cardholder_name=cardholder_name)
+            if status and status != '':
+                object_list = object_list.filter(status=status)
 
         return object_list.order_by('release_date')
 
