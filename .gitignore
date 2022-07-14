@@ -8,4 +8,4 @@ __pycache__/
 **/venv/
 /.pytest_cache/
 db.sqlite3
-cardbase/settings_local.py
+**/settings_local.py
