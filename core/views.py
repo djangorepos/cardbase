@@ -100,7 +100,7 @@ def card_create(request):
 
         def get_cvv():
             cvv = '000'
-            while cvv[0] == cvv[1] == cvv[2]:
+            while cvv[0] == cvv[1] or cvv[1] == cvv[2] or cvv[2] == cvv[0]:
                 cvv = generate_cvv()
             return cvv
 
