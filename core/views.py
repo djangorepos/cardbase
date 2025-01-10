@@ -1,7 +1,5 @@
-from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 from django.core.exceptions import ValidationError
-from django.core.files.images import ImageFile
-from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.views.generic import ListView, FormView, DetailView
@@ -9,6 +7,46 @@ import random
 from core.forms import *
 from core.models import *
 
+
+def sum_num(number):
+    """Sum digits of a number, used for Luhn algorithm."""
+    return number // 10 + number % 10
+
+
+def lunh(number):
+    """Check validity using the Luhn algorithm."""
+    even_numbers = number[::2]
+    odd_numbers = list(number[1::2])
+    sum_odd_numbers = sum(int(i) for i in odd_numbers)
+
+    summ = 0
+    for j in even_numbers:
+        k = int(j) * 2
+        summ += sum_num(k)
+
+    return (summ + sum_odd_numbers) % 10
+
+
+def generate_card_number(card_type):
+    """Generate a valid card number using the Luhn algorithm."""
+    while True:
+        result = '4' if card_type == "visa" else "5"  # Starting with 4 for Visa cards. Adjust for others if needed.
+
+        for k in range(2, 16):
+            result += str(random.randint(1, 9))  # Add random digits for the card number
+
+        # Try adding the last digit (check Luhn)
+        for l in range(0, 10):
+            number = result + str(l)
+            if lunh(number) == 0:
+                return number  # Return a valid card number once it's found
+
+
+def generate_cvv():
+    cvv = '000'
+    while cvv[0] == cvv[1] or cvv[1] == cvv[2] or cvv[2] == cvv[0]:
+        cvv = str(random.randrange(100, 999))
+    return cvv
 
 class CardList(ListView, FormView):
     model = Card
@@ -59,35 +97,6 @@ def card_create(request):
     context = {}
     form = CreateForm
 
-    def sum_num(number):
-        return number // 10 + number % 10
-
-    def luna(card_number):
-        evenNumbers = card_number[::2]
-        oddNumbers = list(card_number[1::2])
-        sumOddNumbers = 0
-        for i in oddNumbers:
-            sumOddNumbers += int(i)
-
-        summ = 0
-        for i in evenNumbers:
-            k = int(i) * 2
-            summ += sum_num(k)
-        return (summ + sumOddNumbers) % 10
-
-    def generate_card_number():
-        result = '4'
-        for i in range(2, 16):
-            random.seed()
-            result += str(random.randint(1, 9))
-            if i % 4 == 0:
-                result += ' '
-
-        for i in range(0, 9):
-            if luna((result + str(i)).replace(" ", '')) == 0:
-                result += str(i)
-                return result
-
     if request.method == 'POST':
         print(request.POST)
         amount = int(request.POST.get('amount'))
@@ -95,40 +104,39 @@ def card_create(request):
         cardholder_name = request.POST.get('cardholder_name')
         date = request.POST.get('date')
 
-        def generate_cvv():
-            return str(random.randrange(100, 999))
-
-        def get_cvv():
-            cvv = '000'
-            while cvv[0] == cvv[1] or cvv[1] == cvv[2] or cvv[2] == cvv[0]:
-                cvv = generate_cvv()
-            return cvv
-
-        if date == '1 year':
-            delta_days = 365
-        elif date == '6 month':
-            delta_days = 182
-        elif date == '1 month':
-            delta_days = 30
+        if date == '3 years':
+            delta_years = 3
+        elif date == '5 years':
+            delta_years = 5
+        elif date == '10 years':
+            delta_years = 10
         else:
-            raise ValidationError
+            raise ValidationError("Could not generate a valid card number.")
+
+        release_date = timezone.now()
+        valid_date = timezone.now() + relativedelta(years=delta_years)
 
         if amount > 0:
-            for i in range(amount):
-                if series == 'visa':
-                    image = ImageFile(open('core/staticfiles/img/visa_default.png', 'rb'))
-                elif series == 'mastercard':
-                    image = ImageFile(open('core/staticfiles/img/mastercard_default.png', 'rb'))
-                else:
-                    raise ValidationError
+            for a in range(amount):
+                card_number = generate_card_number(series)
+                card_cvv = generate_cvv()
 
-                Card.objects.create(image=image,
+                if not card_number:
+                    raise ValidationError("Invalid card number generated.")
+
+                if not card_cvv:
+                    raise ValidationError("Invalid card verification value.")
+
+                # Ensure that card number is assigned correctly
+                print("Generated card:", card_number, card_cvv)
+
+                Card.objects.create(image=None,
                                     series=series,
-                                    number=generate_card_number(),
+                                    number=card_number,
                                     cardholder_name=cardholder_name,
-                                    release_date=timezone.now(),
-                                    valid_date=timezone.now() + timedelta(days=delta_days),
-                                    cvv_code=get_cvv(),
+                                    release_date=release_date,
+                                    valid_date=valid_date,
+                                    cvv_code=card_cvv,
                                     status='active',
                                     balance=0)
         else:
@@ -154,5 +162,5 @@ def card_deactivate(request, pk):
 
 
 def card_delete(request, pk):
-    card = Card.objects.get(id=pk).delete()
+    Card.objects.get(id=pk).delete()
     return redirect('card_list')

@@ -8,11 +8,12 @@
               <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                 <div class="col-lg-4">
                   <div class="card shadow-sm">
-                    <img class="mt-3" src="{{ card.image.url }}" alt="Card">
+                    <img class="mt-3" src="{{ card.image_url }}" alt="Card">
                     <div class="card-body">
                         <p class="card-text">Card series: {{ card.series }}</p>
                         <p class="card-text">Card number: {{ card.number }}</p>
                         <p class="card-text">Valid to: {{ card.valid_date|date:'m' }}/{{ card.valid_date|date:'y' }}</p>
+                        <p class="card-text">Card Verification Value/Code: {{ card.cvv_code }}</p>
                         <p class="card-text">Cardholder name: {{ card.cardholder_name }}</p>
                         <p class="card-text">Status: {{ card.status }}</p>
                         <p class="card-text">Balance: $ {{ card.balance }}</p>
@@ -44,7 +45,6 @@
             </div>
           </div>
       </div>
-    </div>
   </section>
 </main>
 {% endblock %}

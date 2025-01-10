@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import ModelForm, DateTimeInput
+from django.forms import ModelForm
 
 from core.models import Card
 
@@ -22,9 +22,9 @@ class FilterForm(ModelForm):
 
 class CreateForm(ModelForm):
     amount = forms.IntegerField()
-    date = forms.ChoiceField(choices=(('1 year', '1 year'),
-                                      ('6 month', '6 month'),
-                                      ('1 month', '1 month'),
+    date = forms.ChoiceField(choices=(('3 years', '3 years'),
+                                      ('5 years', '5 years'),
+                                      ('10 years', '10 years'),
                                       ))
 
     def __init__(self, *args, **kwargs):

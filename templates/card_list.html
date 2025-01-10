@@ -18,12 +18,13 @@
                 {% for card in object_list %}
                 <div class="col">
                   <div class="card shadow-sm">
-                    <img src="{{ card.image.url }}" alt="Card">
+                    <img class="mt-3" src="{{ card.image_url }}" alt="Card">
                     <div class="card-body">
                         <p class="card-text">Card series: {{ card.series }}</p>
                         <p class="card-text">Card number:</p>
                         <p>{{ card.number }}</p>
                         <p class="card-text">Valid to: {{ card.valid_date|date:'m' }}/{{ card.valid_date|date:'y' }}</p>
+                        <p class="card-text">Card Verification Value/Code: {{ card.cvv_code }}</p>
                         <p class="card-text">Cardholder name:</p>
                         <p>{{ card.cardholder_name }}</p>
                         <p class="card-text">Status: {{ card.status }}</p>
