@@ -2,7 +2,7 @@ Credit Card base example
 
 Deployment:
 - git clone https://github.com/djangorepos/cardbase.git
-- cd crud
+- cd cardbase
 - docker-compose up --build -d
 - docker ps
 - docker exec -it  </your container web/> python manage.py collectstatic --noinput
